@@ -3,9 +3,17 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { heroContent } from "@/constants/data";
+interface HeroProps {
+  heroContent: {
+    title: string;
+    subtitle: string;
+    description: string;
+    cta: string;
+    imageUrl: string;
+  };
+}
 
-export default function Hero() {
+export default function Hero({ heroContent }: HeroProps) {
   const scrollToContent = () => {
     const aboutSection = document.getElementById("about");
     aboutSection?.scrollIntoView({ behavior: "smooth" });

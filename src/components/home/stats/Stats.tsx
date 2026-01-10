@@ -1,16 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Map, Landmark, MapPin } from "lucide-react";
-import { statsData } from "@/constants/data";
+import {
+  Map,
+  Landmark,
+  MapPin,
+  Users,
+  TrendingUp,
+  Factory,
+  HelpCircle,
+} from "lucide-react";
+
+interface StatItem {
+  label: string;
+  value: string;
+  unit: string | null;
+  icon: string | null;
+}
+
+interface StatsProps {
+  statsData: StatItem[];
+}
 
 const iconMap = {
   map: Map,
   landmark: Landmark,
   "map-pin": MapPin,
+  users: Users,
+  "trending-up": TrendingUp,
+  factory: Factory,
 };
 
-export default function Stats() {
+export default function Stats({ statsData }: StatsProps) {
   return (
     <section id="about" className="section-padding bg-white">
       <div className="container-custom">
@@ -31,7 +52,9 @@ export default function Stats() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {statsData.map((stat, index) => {
-            const Icon = iconMap[stat.icon as keyof typeof iconMap];
+            const Icon =
+              (stat.icon && iconMap[stat.icon as keyof typeof iconMap]) ||
+              HelpCircle;
             return (
               <motion.div
                 key={index}

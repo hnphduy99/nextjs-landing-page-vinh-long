@@ -84,7 +84,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className="scroll-smooth">
+    <html lang="vi" className="scroll-smooth mdl-js">
       <body
         className={`${playfairDisplay.variable} ${inter.variable} antialiased`}
       >

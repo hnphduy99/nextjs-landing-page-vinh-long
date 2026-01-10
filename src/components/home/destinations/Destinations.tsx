@@ -1,10 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { destinationsData } from "@/constants/data";
 import PlaceCard from "./PlaceCard";
+interface DestinationItem {
+  id: string;
+  name: string;
+  description: string;
+  category: string | null;
+  imageUrl: string;
+  highlights: string[];
+}
 
-export default function Destinations() {
+interface DestinationsProps {
+  destinations: DestinationItem[];
+}
+
+export default function Destinations({ destinations }: DestinationsProps) {
   return (
     <section id="destinations" className="section-padding bg-[#FFF8F0]">
       <div className="container-custom">
@@ -25,12 +36,12 @@ export default function Destinations() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {destinationsData.map((destination, index) => (
+          {destinations.map((destination, index) => (
             <PlaceCard
               key={destination.id}
               name={destination.name}
               description={destination.description}
-              category={destination.category}
+              category={destination.category || ""}
               imageUrl={destination.imageUrl}
               highlights={destination.highlights}
               index={index}
