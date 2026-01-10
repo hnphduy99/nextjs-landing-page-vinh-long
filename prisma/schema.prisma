@@ -7,8 +7,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model Province {
@@ -26,20 +24,22 @@ model Province {
 }
 
 model Destination {
-  id          String   @id @default(cuid())
-  provinceId  String
-  province    Province @relation(fields: [provinceId], references: [id], onDelete: Cascade)
-  name        String
-  slogan      String?
-  description String   @db.Text
-  imageUrl    String
-  gallery     String[]
-  highlights  String[]
-  experiences String[]
-  tips        String?  @db.Text
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  provinceId      String
+  province        Province @relation(fields: [provinceId], references: [id], onDelete: Cascade)
+  name            String
+  slogan          String?
+  category        String?
+  description     String   @db.Text
+  longDescription String?  @db.Text
+  imageUrl        String
+  gallery         String[]
+  highlights      String[]
+  experiences     String[]
+  tips            String?  @db.Text
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Specialty {
@@ -47,7 +47,7 @@ model Specialty {
   provinceId  String
   province    Province @relation(fields: [provinceId], references: [id], onDelete: Cascade)
   name        String
-  category    String   // 'fruit' or 'dish'
+  category    String // 'fruit' or 'dish'
   description String   @db.Text
   imageUrl    String
   origin      String?
@@ -55,4 +55,69 @@ model Specialty {
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model HistoricalMilestone {
+  id          String   @id @default(cuid())
+  year        String
+  title       String
+  description String   @db.Text
+  imageUrl    String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NotablePersonality {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  achievement String?
+  period      String?
+  description String   @db.Text
+  imageUrl    String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CulturalFeature {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  icon        String?
+  imageUrl    String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Festival {
+  id          String   @id @default(cuid())
+  name        String
+  tagline     String?
+  description String   @db.Text
+  imageUrl    String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Stat {
+  id          String   @id @default(cuid())
+  label       String
+  value       String
+  unit        String?
+  icon        String?
+  description String?  @db.Text
+  category    String   @default("general") // "general", "modern", "stats"
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
 }
