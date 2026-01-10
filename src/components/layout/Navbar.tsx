@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/", label: "Trang chủ" },
@@ -17,6 +18,7 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,23 +71,38 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link, index) => (
-              <motion.div
-                key={link.href}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Link
-                  href={link.href}
-                  className={`font-medium transition-colors hover:text-[#E07B39] ${
-                    isScrolled ? "text-gray-700" : "text-white"
-                  }`}
+            {navLinks.map((link, index) => {
+              const isActive = pathname === link.href;
+              return (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {link.label}
-                </Link>
-              </motion.div>
-            ))}
+                  <Link
+                    href={link.href}
+                    className={`font-medium transition-all hover:text-[#E07B39] relative py-2 ${
+                      isActive
+                        ? "text-[#E07B39] font-bold"
+                        : isScrolled
+                        ? "text-gray-700"
+                        : "text-white"
+                    }`}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNav"
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#E07B39] rounded-full"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                      />
+                    )}
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Mobile Menu Button */}
@@ -105,19 +122,26 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white rounded-lg shadow-lg mt-2 overflow-hidden"
+            className="md:hidden bg-white rounded-2xl shadow-xl mt-2 overflow-hidden border border-gray-100"
           >
-            <div className="py-4 space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-6 py-3 text-gray-700 hover:bg-[#FFF8F0] hover:text-[#E07B39] transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
+            <div className="py-4 px-2 space-y-1">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block px-6 py-3 rounded-xl transition-all ${
+                      isActive
+                        ? "bg-[#FFF8F0] text-[#E07B39] font-bold shadow-sm"
+                        : "text-gray-700 hover:bg-gray-50 hover:text-[#E07B39]"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
           </motion.div>
         )}

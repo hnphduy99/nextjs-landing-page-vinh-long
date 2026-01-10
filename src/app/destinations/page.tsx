@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { CheckCircle, Info, Lightbulb, MapPin, Camera } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import MapSection from "@/components/destinations/MapSection";
 import {
   detailedDestinations,

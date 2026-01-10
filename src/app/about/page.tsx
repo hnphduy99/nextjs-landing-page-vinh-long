@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import AboutHero from "@/components/about/AboutHero";
 import GeneralInfo from "@/components/about/GeneralInfo";
 import HistoricalTimeline from "@/components/about/HistoricalTimeline";

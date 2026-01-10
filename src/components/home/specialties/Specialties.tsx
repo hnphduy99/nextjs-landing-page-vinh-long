@@ -2,9 +2,19 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { specialtiesData } from "@/constants/data";
+interface SpecialtyItem {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  origin: string | null;
+}
 
-export default function Specialties() {
+interface SpecialtiesProps {
+  specialties: SpecialtyItem[];
+}
+
+export default function Specialties({ specialties }: SpecialtiesProps) {
   return (
     <section id="specialties" className="section-padding bg-white">
       <div className="container-custom">
@@ -24,7 +34,7 @@ export default function Specialties() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {specialtiesData.map((specialty, index) => (
+          {specialties.map((specialty, index) => (
             <motion.div
               key={specialty.id}
               initial={{ opacity: 0, scale: 0.9 }}
