@@ -12,16 +12,28 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 type ContentType = "milestones" | "personalities" | "features" | "festivals";
 
+interface ContentItem {
+  id: string;
+  year?: string;
+  title?: string;
+  name?: string;
+  tagline?: string;
+  description: string;
+  imageUrl?: string;
+  order: number;
+}
+
 export default function AdminContent() {
   const [activeTab, setActiveTab] = useState<ContentType>("milestones");
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
-  const [formData, setFormData] = useState<any>({});
+  const [editingItem, setEditingItem] = useState<ContentItem | null>(null);
+  const [formData, setFormData] = useState<Partial<ContentItem>>({});
   const [isSaving, setIsSaving] = useState(false);
 
   const tabs = [
@@ -31,7 +43,7 @@ export default function AdminContent() {
     { id: "festivals", label: "Lễ hội", icon: Sparkles },
   ] as const;
 
-  const fetchContent = () => {
+  const fetchContent = React.useCallback(() => {
     setLoading(true);
     fetch(`/api/admin/content?type=${activeTab}`)
       .then((res) => res.json())
@@ -39,11 +51,11 @@ export default function AdminContent() {
         setData(items);
         setLoading(false);
       });
-  };
+  }, [activeTab]);
 
   useEffect(() => {
     fetchContent();
-  }, [activeTab]);
+  }, [fetchContent]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Bạn có chắc chắn muốn xóa?")) return;
@@ -52,12 +64,12 @@ export default function AdminContent() {
         method: "DELETE",
       });
       if (res.ok) setData(data.filter((item) => item.id !== id));
-    } catch (error) {
+    } catch {
       alert("Lỗi khi xóa");
     }
   };
 
-  const handleOpenModal = (item: any = null) => {
+  const handleOpenModal = (item: ContentItem | null = null) => {
     setEditingItem(item);
     setFormData(item || { order: data.length + 1 });
     setIsModalOpen(true);
@@ -72,7 +84,7 @@ export default function AdminContent() {
         : `/api/admin/content?type=${activeTab}`;
 
       const res = await fetch(url, {
-        method: editingItem ? "PUT" : "POST",
+        method: editingItem ? "PATCH" : "POST",
         body: JSON.stringify(formData),
       });
 
@@ -80,7 +92,7 @@ export default function AdminContent() {
         setIsModalOpen(false);
         fetchContent();
       }
-    } catch (error) {
+    } catch {
       alert("Lỗi khi lưu");
     } finally {
       setIsSaving(false);
@@ -299,6 +311,12 @@ export default function AdminContent() {
                   placeholder="Nhập mô tả chi tiết..."
                 />
               </div>
+
+              <ImageUpload
+                value={formData.imageUrl || ""}
+                onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                onRemove={() => setFormData({ ...formData, imageUrl: "" })}
+              />
 
               <div className="flex gap-4 pt-4">
                 <button

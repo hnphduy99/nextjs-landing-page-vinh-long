@@ -13,10 +13,10 @@ interface StatsData {
 
 interface Activity {
   id: string;
-  name: string;
+  itemName: string;
   type: string;
   action: string;
-  updatedAt: string;
+  createdAt: string;
 }
 
 export default function AdminDashboard() {
@@ -30,7 +30,7 @@ export default function AdminDashboard() {
       fetch("/api/admin/activity").then((res) => res.json()),
     ]).then(([stats, activityData]) => {
       setData(stats);
-      setActivities(activityData);
+      setActivities(activityData.activities || []);
       setLoading(false);
     });
   }, []);
@@ -132,10 +132,16 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-medium text-slate-900">
-                      Đã cập nhật {activity.action} &quot;{activity.name}&quot;
+                      Đã {activity.action}{" "}
+                      {activity.type === "destination"
+                        ? "địa điểm"
+                        : activity.type === "specialty"
+                        ? "đặc sản"
+                        : "nội dung"}{" "}
+                      &quot;{activity.itemName}&quot;
                     </p>
                     <p className="text-xs text-slate-400">
-                      {new Date(activity.updatedAt).toLocaleString("vi-VN")}
+                      {new Date(activity.createdAt).toLocaleString("vi-VN")}
                     </p>
                   </div>
                 </div>

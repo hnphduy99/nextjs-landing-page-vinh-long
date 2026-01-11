@@ -121,3 +121,11 @@ model SiteSetting {
   key   String @unique
   value String @db.Text
 }
+
+model AdminActivity {
+  id        String   @id @default(cuid())
+  type      String   // 'destination', 'specialty', 'festival', 'milestone', etc.
+  action    String   // 'thêm', 'sửa', 'xóa'
+  itemName  String
+  createdAt DateTime @default(now())
+}
