@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { logActivity } from "@/lib/admin/activity";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -54,13 +55,21 @@ export async function POST(request: Request) {
     } else {
       return NextResponse.json({ error: "Invalid type" }, { status: 400 });
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await logActivity(
+      type as string,
+      "thêm",
+      (data as any).title || (data as any).name || "Nội dung"
+    );
+
     return NextResponse.json(data);
   } catch {
     return NextResponse.json({ error: "Failed to create" }, { status: 500 });
   }
 }
 
-export async function PUT(request: Request) {
+export async function PATCH(request: Request) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
   const id = searchParams.get("id");
@@ -69,7 +78,7 @@ export async function PUT(request: Request) {
   if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
 
   // Remove ID or other read-only fields from body to avoid Prisma errors
-  const { id: _, updatedAt, createdAt, ...updateData } = body;
+  const { id: _, updatedAt: __, createdAt: ___, ...updateData } = body;
 
   try {
     let data;
@@ -93,8 +102,16 @@ export async function PUT(request: Request) {
     } else {
       return NextResponse.json({ error: "Invalid type" }, { status: 400 });
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await logActivity(
+      type as string,
+      "sửa",
+      (data as any).title || (data as any).name || "Nội dung"
+    );
+
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to update" }, { status: 500 });
   }
 }
@@ -107,15 +124,23 @@ export async function DELETE(request: Request) {
   if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
 
   try {
+    let data;
     if (type === "milestones")
-      await prisma.historicalMilestone.delete({ where: { id } });
+      data = await prisma.historicalMilestone.delete({ where: { id } });
     else if (type === "personalities")
-      await prisma.notablePersonality.delete({ where: { id } });
+      data = await prisma.notablePersonality.delete({ where: { id } });
     else if (type === "features")
-      await prisma.culturalFeature.delete({ where: { id } });
+      data = await prisma.culturalFeature.delete({ where: { id } });
     else if (type === "festivals")
-      await prisma.festival.delete({ where: { id } });
+      data = await prisma.festival.delete({ where: { id } });
     else return NextResponse.json({ error: "Invalid type" }, { status: 400 });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await logActivity(
+      type as string,
+      "xóa",
+      (data as any).title || (data as any).name || "Nội dung"
+    );
 
     return NextResponse.json({ success: true });
   } catch {
