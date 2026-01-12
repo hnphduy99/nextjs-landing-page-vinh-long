@@ -1,5 +1,5 @@
-import { createClient } from "@/lib/supabase-server";
-import { NextResponse } from "next/server";
+import { createClient } from '@/lib/supabase-server';
+import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password,
+      password
     });
 
     if (error) {
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, user: data.user });
   } catch (error) {
-    console.error("Login error:", error);
-    return NextResponse.json({ error: "Lỗi hệ thống" }, { status: 500 });
+    console.error('Login error:', error);
+    return NextResponse.json({ error: 'Lỗi hệ thống' }, { status: 500 });
   }
 }
