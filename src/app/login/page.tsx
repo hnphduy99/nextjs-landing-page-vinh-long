@@ -1,128 +1,101 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Lock, Mail, Loader2, ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import axiosInstance from '@/lib/axios';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await axiosInstance.post('api/auth/login', {
+        email,
+        password
       });
 
-      const data = await res.json();
-
-      if (res.ok) {
-        router.push("/admin");
+      if (res.data.success) {
+        router.push('/admin');
       } else {
-        setError(data.error || "Đăng nhập thất bại");
+        setError(res.data.error || 'Đăng nhập thất bại');
       }
     } catch (err) {
-      setError("Lỗi kết nối máy chủ");
+      setError('Lỗi kết nối máy chủ' + (err instanceof Error ? `: ${err.message}` : ''));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className='grid min-h-screen lg:grid-cols-2'>
       {/* Visual Side */}
-      <div className="hidden lg:block relative overflow-hidden bg-slate-900">
+      <div className='relative hidden overflow-hidden bg-slate-900 lg:block'>
         <Image
-          src="https://images.unsplash.com/photo-1596402184320-417d717867cd?q=80&w=2400"
-          alt="Vĩnh Long"
+          src='https://images.unsplash.com/photo-1596402184320-417d717867cd?q=80&w=2400'
+          alt='Vĩnh Long'
           fill
-          className="object-cover opacity-60"
+          className='object-cover opacity-60'
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
-        <div className="absolute bottom-20 left-20 right-20 z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl font-bold text-white mb-6 font-primary">
-              Quản trị viên <br />
-              <span className="text-[#E07B39]">Đất Vĩnh</span>
-            </h1>
-            <p className="text-xl text-white/80 max-w-lg leading-relaxed">
-              Chào mừng bạn trở lại với hệ thống quản lý nội dung du lịch tỉnh
-              Vĩnh Long. Mỗi đóng góp của bạn đều giúp vẻ đẹp quê hương vươn xa
-              hơn.
-            </p>
-          </motion.div>
-        </div>
+        <div className='absolute inset-0 bg-linear-to-t from-slate-900 via-transparent to-transparent' />
       </div>
 
       {/* Form Side */}
-      <div className="flex items-center justify-center p-8 bg-slate-50">
+      <div className='flex items-center justify-center bg-slate-50 p-8'>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md bg-white p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-100"
+          className='w-full max-w-md rounded-[2.5rem] border border-slate-100 bg-white p-10 shadow-2xl shadow-slate-200/50'
         >
-          <div className="mb-10 text-center">
-            <div className="w-16 h-16 bg-[#FFF8F0] rounded-2xl flex items-center justify-center mx-auto mb-4 text-[#E07B39]">
+          <div className='mb-10 text-center'>
+            <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#FFF8F0] text-[#E07B39]'>
               <Lock size={32} />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900">
-              Đăng nhập Admin
-            </h2>
-            <p className="text-slate-500 mt-2 text-sm uppercase tracking-widest font-bold">
-              Vĩnh Long - Về là thương
-            </p>
+            <h2 className='text-3xl font-bold text-slate-900'>Đăng nhập Admin</h2>
+            <p className='mt-2 text-sm font-bold tracking-widest text-slate-500 uppercase'>Vĩnh Long - Về là thương</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400 uppercase ml-2">
-                Email của bạn
-              </label>
-              <div className="relative group">
-                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#E07B39] transition-colors">
+          <form onSubmit={handleLogin} className='space-y-6'>
+            <div className='space-y-2'>
+              <label className='ml-2 text-xs font-bold text-slate-400 uppercase'>Email của bạn</label>
+              <div className='group relative'>
+                <div className='absolute top-1/2 left-6 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-[#E07B39]'>
                   <Mail size={20} />
                 </div>
                 <input
-                  type="email"
+                  type='email'
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="duyhuynh.work99@gmail.com"
-                  className="w-full bg-slate-50 border-none rounded-2xl px-14 py-4 focus:ring-2 focus:ring-[#E07B39]/20 focus:bg-white transition-all outline-none text-slate-900"
+                  placeholder='youremail@email.com'
+                  className='w-full rounded-2xl border-none bg-slate-50 px-14 py-4 text-slate-900 transition-all outline-none focus:bg-white focus:ring-2 focus:ring-[#E07B39]/20'
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400 uppercase ml-2">
-                Mật khẩu
-              </label>
-              <div className="relative group">
-                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#E07B39] transition-colors">
+            <div className='space-y-2'>
+              <label className='ml-2 text-xs font-bold text-slate-400 uppercase'>Mật khẩu</label>
+              <div className='group relative'>
+                <div className='absolute top-1/2 left-6 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-[#E07B39]'>
                   <Lock size={20} />
                 </div>
                 <input
-                  type="password"
+                  type='password'
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-slate-50 border-none rounded-2xl px-14 py-4 focus:ring-2 focus:ring-[#E07B39]/20 focus:bg-white transition-all outline-none text-slate-900"
+                  placeholder='••••••••'
+                  className='w-full rounded-2xl border-none bg-slate-50 px-14 py-4 text-slate-900 transition-all outline-none focus:bg-white focus:ring-2 focus:ring-[#E07B39]/20'
                 />
               </div>
             </div>
@@ -131,20 +104,20 @@ export default function LoginPage() {
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-red-50 text-red-500 p-4 rounded-xl text-sm border border-red-100 flex items-center gap-3"
+                className='flex items-center gap-3 rounded-xl border border-red-100 bg-red-50 p-4 text-sm text-red-500'
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                <div className='h-1.5 w-1.5 rounded-full bg-red-500' />
                 {error}
               </motion.div>
             )}
 
             <button
-              type="submit"
+              type='submit'
               disabled={loading}
-              className="w-full bg-[#E07B39] hover:bg-[#c96e33] text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-[#E07B39]/25 hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:translate-y-0"
+              className='flex w-full items-center justify-center gap-3 rounded-2xl bg-[#E07B39] py-4 text-lg font-bold text-white shadow-lg shadow-[#E07B39]/25 transition-all hover:-translate-y-0.5 hover:bg-[#c96e33] hover:shadow-xl disabled:translate-y-0 disabled:opacity-70'
             >
               {loading ? (
-                <Loader2 size={24} className="animate-spin" />
+                <Loader2 size={24} className='animate-spin' />
               ) : (
                 <>
                   Bắt đầu làm việc <ArrowRight size={20} />
@@ -152,13 +125,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          <p className="text-center mt-10 text-slate-400 text-sm">
-            Hỗ trợ kỹ thuật?{" "}
-            <a href="#" className="text-[#E07B39] font-bold hover:underline">
-              Liên hệ IT
-            </a>
-          </p>
         </motion.div>
       </div>
     </div>
