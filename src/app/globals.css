@@ -1,24 +1,28 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --font-inter: var(--font-inter);
   --font-playfair: var(--font-playfair);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
 }
 
 @layer base {
   :root {
     /* Màu chính */
-    --color-primary: 224 123 57; /* #E07B39 - Cam Gạch */
-    --color-secondary: 76 175 80; /* #4CAF50 - Xanh Lá */
-    --color-background: 255 248 240; /* #FFF8F0 - Be/Kem */
+    --primary: #e07b39; /* Cam Gạch */
+    --secondary: #4caf50; /* Xanh Lá */
+    --background: #fff8f0; /* Be/Kem */
 
     /* Màu bổ sung */
-    --color-text-primary: 30 30 30;
-    --color-text-secondary: 100 100 100;
-    --color-accent: 255 193 7;
+    --text-primary: #1e1e1e;
+    --text-secondary: #666666;
+    --accent: #ffbf00;
 
     /* Gradient */
-    --gradient-primary: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-secondary)) 100%);
+    --gradient-primary: linear-gradient(135deg, rgb(var(--primary)) 0%, rgb(var(--secondary)) 100%);
   }
 
   html {
