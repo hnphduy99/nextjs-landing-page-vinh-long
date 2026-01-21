@@ -1,49 +1,44 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import {
-  LayoutDashboard,
-  FileText,
-  MapPin,
-  Utensils,
-  Settings,
-  LogOut,
-} from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import apiClient from '@/lib/api-client';
+import { motion } from 'framer-motion';
+import { FileText, LayoutDashboard, LogOut, MapPin, Settings, Utensils } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 const sidebarLinks = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/content", label: "Nội dung chính", icon: FileText },
-  { href: "/admin/destinations", label: "Điểm đến", icon: MapPin },
-  { href: "/admin/specialties", label: "Đặc sản", icon: Utensils },
-  { href: "/admin/settings", label: "Cài đặt", icon: Settings },
+  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/content', label: 'Nội dung chính', icon: FileText },
+  { href: '/admin/destinations', label: 'Điểm đến', icon: MapPin },
+  { href: '/admin/specialties', label: 'Đặc sản', icon: Utensils },
+  { href: '/admin/settings', label: 'Cài đặt', icon: Settings }
 ];
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
+    try {
+      await apiClient.post('/api/auth/logout');
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      router.push('/login');
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className='flex min-h-screen bg-gray-50'>
       {/* Sidebar */}
-      <aside className="w-64 bg-slate-900 text-white min-h-screen fixed left-0 top-0 z-50">
-        <div className="p-6">
-          <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
-            <span className="text-[#E07B39]">Vĩnh Long</span> Admin
+      <aside className='fixed top-0 left-0 z-50 min-h-screen w-64 bg-slate-900 text-white'>
+        <div className='p-6'>
+          <h1 className='flex items-center gap-2 text-xl font-bold tracking-tight'>
+            <span className='text-[#E07B39]'>Vĩnh Long</span> Admin
           </h1>
         </div>
 
-        <nav className="mt-6 px-4 space-y-2">
+        <nav className='mt-6 space-y-2 px-4'>
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -51,37 +46,33 @@ export default function AdminLayout({
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all ${
                   isActive
-                    ? "bg-[#E07B39] text-white shadow-lg shadow-[#E07B39]/20"
-                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                    ? 'bg-[#E07B39] text-white shadow-lg shadow-[#E07B39]/20'
+                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 <Icon size={20} />
-                <span className="font-medium text-sm">{link.label}</span>
+                <span className='text-sm font-medium'>{link.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="absolute bottom-8 left-0 w-full px-4">
+        <div className='absolute bottom-8 left-0 w-full px-4'>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-red-500/10 hover:text-red-500 transition-all w-full text-left"
+            className='flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-slate-400 transition-all hover:bg-red-500/10 hover:text-red-500'
           >
             <LogOut size={20} />
-            <span className="font-medium text-sm">Đăng xuất</span>
+            <span className='text-sm font-medium'>Đăng xuất</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
+      <main className='ml-64 flex-1 p-8'>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           {children}
         </motion.div>
       </main>

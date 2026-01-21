@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2, Loader2, Image as ImageIcon, X } from 'lucide-react';
-import Image from 'next/image';
-import ImageUpload from '@/components/admin/ImageUpload';
 import GalleryUpload from '@/components/admin/GalleryUpload';
+import ImageUpload from '@/components/admin/ImageUpload';
+import apiClient from '@/lib/api-client';
+import { Edit2, Image as ImageIcon, Loader2, Plus, Trash2, X } from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 interface Province {
   id: string;
@@ -51,9 +52,10 @@ export default function AdminDestinations() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [destRes, provRes] = await Promise.all([fetch('/api/admin/destinations'), fetch('/api/admin/provinces')]);
-      const dests = await destRes.json();
-      const provs = await provRes.json();
+      const [dests, provs] = await Promise.all([
+        apiClient.get('/api/admin/destinations'),
+        apiClient.get('/api/admin/provinces')
+      ]);
       setItems(dests);
       setProvinces(provs);
       setLoading(false);
@@ -70,12 +72,10 @@ export default function AdminDestinations() {
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa địa điểm này?')) return;
     try {
-      const res = await fetch(`/api/admin/destinations?id=${id}`, {
-        method: 'DELETE'
-      });
-      if (res.ok) setItems(items.filter((item) => item.id !== id));
-    } catch {
-      alert('Lỗi khi xóa');
+      await apiClient.delete(`/api/admin/destinations?id=${id}`);
+      setItems(items.filter((item) => item.id !== id));
+    } catch (error: any) {
+      alert(error.message || 'Lỗi khi xóa');
     }
   };
 
@@ -106,17 +106,15 @@ export default function AdminDestinations() {
     e.preventDefault();
     setIsSaving(true);
     try {
-      const res = await fetch(editingItem ? '/api/admin/destinations' : '/api/admin/destinations', {
-        method: editingItem ? 'PATCH' : 'POST',
-        body: JSON.stringify(formData)
-      });
-
-      if (res.ok) {
-        setIsModalOpen(false);
-        fetchData();
+      if (editingItem) {
+        await apiClient.patch('/api/admin/destinations', formData);
+      } else {
+        await apiClient.post('/api/admin/destinations', formData);
       }
-    } catch {
-      alert('Lỗi khi lưu');
+      setIsModalOpen(false);
+      fetchData();
+    } catch (error: any) {
+      alert(error.message || 'Lỗi khi lưu');
     } finally {
       setIsSaving(false);
     }
