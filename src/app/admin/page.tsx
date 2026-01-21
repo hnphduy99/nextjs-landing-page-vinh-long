@@ -1,7 +1,8 @@
-"use client";
-import { Eye, MapPin, Sparkles, Utensils, Loader2, Clock } from "lucide-react";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+'use client';
+import apiClient from '@/lib/api-client';
+import { motion } from 'framer-motion';
+import { Clock, Eye, Loader2, MapPin, Sparkles, Utensils } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface StatsData {
   destinations: number;
@@ -25,153 +26,133 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/admin/stats").then((res) => res.json()),
-      fetch("/api/admin/activity").then((res) => res.json()),
-    ]).then(([stats, activityData]) => {
-      setData(stats);
-      setActivities(activityData.activities || []);
-      setLoading(false);
-    });
+    Promise.all([apiClient.get('/api/admin/stats'), apiClient.get('/api/admin/activity')])
+      .then(([stats, activityData]) => {
+        setData(stats);
+        setActivities(activityData.activities || []);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch dashboard data:', error);
+        setLoading(false);
+      });
   }, []);
 
   const statsFields = [
     {
-      label: "Tổng lượt xem",
-      value: data?.views?.toLocaleString() || "0",
+      label: 'Tổng lượt xem',
+      value: data?.views?.toLocaleString() || '0',
       icon: Eye,
-      color: "text-blue-600",
-      bg: "bg-blue-100",
-      subLabel: "Vercel Analytics",
+      color: 'text-blue-600',
+      bg: 'bg-blue-100',
+      subLabel: 'Vercel Analytics'
     },
     {
-      label: "Địa điểm",
-      value: data?.destinations || "0",
+      label: 'Địa điểm',
+      value: data?.destinations || '0',
       icon: MapPin,
-      color: "text-orange-600",
-      bg: "bg-orange-100",
-      subLabel: "Database",
+      color: 'text-orange-600',
+      bg: 'bg-orange-100',
+      subLabel: 'Database'
     },
     {
-      label: "Đặc sản",
-      value: data?.specialties || "0",
+      label: 'Đặc sản',
+      value: data?.specialties || '0',
       icon: Utensils,
-      color: "text-green-600",
-      bg: "bg-green-100",
-      subLabel: "Database",
+      color: 'text-green-600',
+      bg: 'bg-green-100',
+      subLabel: 'Database'
     },
     {
-      label: "Lễ hội",
-      value: data?.festivals || "0",
+      label: 'Lễ hội',
+      value: data?.festivals || '0',
       icon: Sparkles,
-      color: "text-purple-600",
-      bg: "bg-purple-100",
-      subLabel: "Database",
-    },
+      color: 'text-purple-600',
+      bg: 'bg-purple-100',
+      subLabel: 'Database'
+    }
   ];
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="animate-spin text-[#E07B39]" size={32} />
+      <div className='flex h-64 items-center justify-center'>
+        <Loader2 className='animate-spin text-[#E07B39]' size={32} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className='space-y-8'>
       <div>
-        <h2 className="text-3xl font-bold text-slate-900">Chào mừng trở lại</h2>
-        <p className="text-slate-500 mt-1">
-          Hệ thống quản trị nội dung Landing Page Vĩnh Long.
-        </p>
+        <h2 className='text-3xl font-bold text-slate-900'>Chào mừng trở lại</h2>
+        <p className='mt-1 text-slate-500'>Hệ thống quản trị nội dung Landing Page Vĩnh Long.</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
         {statsFields.map((stat, idx) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-5 hover:shadow-md transition-shadow relative overflow-hidden"
+            className='relative flex items-center gap-5 overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md'
           >
-            <div
-              className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-2xl flex items-center justify-center`}
-            >
+            <div className={`h-14 w-14 ${stat.bg} ${stat.color} flex items-center justify-center rounded-2xl`}>
               <stat.icon size={28} />
             </div>
             <div>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">
-                {stat.label}
-              </p>
-              <h3 className="text-2xl font-black text-slate-900">
-                {stat.value}
-              </h3>
-              <p className="text-[10px] text-slate-400 mt-1">{stat.subLabel}</p>
+              <p className='text-xs font-bold tracking-wider text-slate-500 uppercase'>{stat.label}</p>
+              <h3 className='text-2xl font-black text-slate-900'>{stat.value}</h3>
+              <p className='mt-1 text-[10px] text-slate-400'>{stat.subLabel}</p>
             </div>
           </motion.div>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
-          <h3 className="text-xl font-bold text-slate-900 mb-6 font-primary">
-            Hoạt động gần đây
-          </h3>
-          <div className="space-y-6">
+      <div className='grid gap-8 lg:grid-cols-3'>
+        <div className='rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm lg:col-span-2'>
+          <h3 className='font-primary mb-6 text-xl font-bold text-slate-900'>Hoạt động gần đây</h3>
+          <div className='space-y-6'>
             {activities.length > 0 ? (
               activities.map((activity, idx) => (
                 <div
                   key={`${activity.type}-${activity.id}-${idx}`}
-                  className="flex items-center gap-4 py-4 border-b border-slate-50 last:border-0"
+                  className='flex items-center gap-4 border-b border-slate-50 py-4 last:border-0'
                 >
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                  <div className='flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500'>
                     <Clock size={18} />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-slate-900">
-                      Đã {activity.action}{" "}
-                      {activity.type === "destination"
-                        ? "địa điểm"
-                        : activity.type === "specialty"
-                        ? "đặc sản"
-                        : "nội dung"}{" "}
+                  <div className='flex-1'>
+                    <p className='text-sm font-medium text-slate-900'>
+                      Đã {activity.action}{' '}
+                      {activity.type === 'destination'
+                        ? 'địa điểm'
+                        : activity.type === 'specialty'
+                          ? 'đặc sản'
+                          : 'nội dung'}{' '}
                       &quot;{activity.itemName}&quot;
                     </p>
-                    <p className="text-xs text-slate-400">
-                      {new Date(activity.createdAt).toLocaleString("vi-VN")}
-                    </p>
+                    <p className='text-xs text-slate-400'>{new Date(activity.createdAt).toLocaleString('vi-VN')}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-slate-400 text-center py-8">
-                Chưa có hoạt động nào được ghi lại.
-              </p>
+              <p className='py-8 text-center text-slate-400'>Chưa có hoạt động nào được ghi lại.</p>
             )}
           </div>
         </div>
 
-        <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
-          <h3 className="text-xl font-bold text-slate-900 mb-6">
-            Trạng thái hệ thống
-          </h3>
-          <div className="space-y-4">
-            <div className="p-4 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-between">
-              <span className="text-sm font-medium text-green-700">
-                Database (Supabase)
-              </span>
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+        <div className='rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm'>
+          <h3 className='mb-6 text-xl font-bold text-slate-900'>Trạng thái hệ thống</h3>
+          <div className='space-y-4'>
+            <div className='flex items-center justify-between rounded-2xl border border-green-100 bg-green-50 p-4'>
+              <span className='text-sm font-medium text-green-700'>Database (Supabase)</span>
+              <div className='h-2 w-2 animate-pulse rounded-full bg-green-500' />
             </div>
-            <div className="p-4 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-between">
-              <span className="text-sm font-medium text-blue-700">
-                Analytics (Vercel)
-              </span>
-              <span className="text-xs font-bold text-blue-600 uppercase">
-                Connected
-              </span>
+            <div className='flex items-center justify-between rounded-2xl border border-blue-100 bg-blue-50 p-4'>
+              <span className='text-sm font-medium text-blue-700'>Analytics (Vercel)</span>
+              <span className='text-xs font-bold text-blue-600 uppercase'>Connected</span>
             </div>
           </div>
         </div>

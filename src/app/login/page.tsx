@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import apiClient from '@/lib/api-client';
 import { motion } from 'framer-motion';
-import { Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { ArrowRight, Loader2, Lock, Mail } from 'lucide-react';
 import Image from 'next/image';
-import axiosInstance from '@/lib/axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -20,18 +20,25 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const res = await axiosInstance.post('api/auth/login', {
+      // Using new native fetch-based API client
+      const res = await apiClient.post('/api/auth/login', {
         email,
         password
       });
 
-      if (res.data.success) {
+      if (res.success) {
+        // Optional: Store auth token if returned
+        if (res.data?.token) {
+          localStorage.setItem('auth_token', res.data.token);
+        }
+
         router.push('/admin');
       } else {
-        setError(res.data.error || 'Đăng nhập thất bại');
+        setError(res.error || 'Đăng nhập thất bại');
       }
-    } catch (err) {
-      setError('Lỗi kết nối máy chủ' + (err instanceof Error ? `: ${err.message}` : ''));
+    } catch (err: any) {
+      // Error handling is improved - messages are already localized in api-client
+      setError(err.message || 'Lỗi kết nối máy chủ');
     } finally {
       setLoading(false);
     }
