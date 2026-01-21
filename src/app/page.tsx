@@ -1,13 +1,13 @@
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import Hero from "@/components/home/Hero";
-import History from "@/components/home/History";
-import Gallery from "@/components/home/Gallery";
-import Directions from "@/components/home/Directions";
-import StatsWrapper from "@/components/home/stats/StatsWrapper";
-import DestinationsWrapper from "@/components/home/destinations/DestinationsWrapper";
-import SpecialtiesWrapper from "@/components/home/specialties/SpecialtiesWrapper";
-import { prisma } from "@/lib/prisma";
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import Hero from '@/components/home/Hero';
+import History from '@/components/home/History';
+import Gallery from '@/components/home/Gallery';
+import Directions from '@/components/home/Directions';
+import StatsWrapper from '@/components/home/stats/StatsWrapper';
+import DestinationsWrapper from '@/components/home/destinations/DestinationsWrapper';
+import SpecialtiesWrapper from '@/components/home/specialties/SpecialtiesWrapper';
+import { prisma } from '@/lib/prisma';
 
 interface SiteConfig {
   hero_content?: {
@@ -38,17 +38,15 @@ export default async function Home() {
   }, {} as SiteConfig);
 
   const heroData = siteConfig.hero_content || {
-    title: "VĨNH LONG",
-    subtitle: "NHỊP CẦU NỐI NHỮNG BỜ VUI",
-    description:
-      "Vùng đất giữa hai dòng sông Tiền và sông Hậu, nơi hội tụ tinh hoa văn hóa Nam Bộ.",
-    cta: "Khám phá ngay",
-    imageUrl:
-      "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2400",
+    title: 'VĨNH LONG',
+    subtitle: 'NHỊP CẦU NỐI NHỮNG BỜ VUI',
+    description: 'Vùng đất giữa hai dòng sông Tiền và sông Hậu, nơi hội tụ tinh hoa văn hóa Nam Bộ.',
+    cta: 'Khám phá ngay',
+    imageUrl: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2400'
   };
 
   return (
-    <div className="min-h-screen">
+    <div className='min-h-screen'>
       <Navbar />
       <Hero heroContent={heroData} />
 

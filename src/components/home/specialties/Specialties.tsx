@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 interface SpecialtyItem {
   id: string;
   name: string;
@@ -16,24 +16,20 @@ interface SpecialtiesProps {
 
 export default function Specialties({ specialties }: SpecialtiesProps) {
   return (
-    <section id="specialties" className="section-padding bg-white">
-      <div className="container-custom">
+    <section id='specialties' className='section-padding bg-white'>
+      <div className='container-custom'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className='mb-16 text-center'
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Đặc sản Vĩnh Long
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Hương vị đặc trưng của vùng đất sông nước
-          </p>
+          <h2 className='mb-4 text-4xl font-bold text-gray-900 md:text-5xl'>Đặc sản Vĩnh Long</h2>
+          <p className='mx-auto max-w-2xl text-xl text-gray-600'>Hương vị đặc trưng của vùng đất sông nước</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
           {specialties.map((specialty, index) => (
             <motion.div
               key={specialty.id}
@@ -42,41 +38,35 @@ export default function Specialties({ specialties }: SpecialtiesProps) {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               whileHover={{ y: -10 }}
-              className="group bg-white rounded-2xl overflow-hidden shadow-lg card-hover"
+              className='group card-hover overflow-hidden rounded-2xl bg-white shadow-lg'
             >
               {/* Image */}
-              <div className="relative h-72 overflow-hidden">
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.4 }}
-                  className="w-full h-full"
-                >
+              <div className='relative h-72 overflow-hidden'>
+                <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.4 }} className='h-full w-full'>
                   <Image
                     src={specialty.imageUrl}
                     alt={specialty.name}
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className='object-cover'
+                    sizes='(max-width: 768px) 100vw, 33vw'
                   />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent' />
 
                 {/* Origin Badge */}
-                <div className="absolute bottom-4 left-4 right-4">
-                  <span className="inline-block px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-semibold text-[#4CAF50]">
+                <div className='absolute right-4 bottom-4 left-4'>
+                  <span className='inline-block rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-[#4CAF50] backdrop-blur-sm'>
                     {specialty.origin}
                   </span>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-[#E07B39] transition-colors">
+              <div className='p-6'>
+                <h3 className='mb-3 text-2xl font-bold text-gray-900 transition-colors group-hover:text-[#E07B39]'>
                   {specialty.name}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {specialty.description}
-                </p>
+                <p className='leading-relaxed text-gray-600'>{specialty.description}</p>
               </div>
             </motion.div>
           ))}

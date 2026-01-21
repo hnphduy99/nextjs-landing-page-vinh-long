@@ -1,15 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import {
-  Map,
-  Landmark,
-  MapPin,
-  Users,
-  TrendingUp,
-  Factory,
-  HelpCircle,
-} from "lucide-react";
+import { motion } from 'framer-motion';
+import { Map, Landmark, MapPin, Users, TrendingUp, Factory, HelpCircle } from 'lucide-react';
 
 interface StatItem {
   label: string;
@@ -25,36 +17,32 @@ interface StatsProps {
 const iconMap = {
   map: Map,
   landmark: Landmark,
-  "map-pin": MapPin,
+  'map-pin': MapPin,
   users: Users,
-  "trending-up": TrendingUp,
-  factory: Factory,
+  'trending-up': TrendingUp,
+  factory: Factory
 };
 
 export default function Stats({ statsData }: StatsProps) {
   return (
-    <section id="about" className="section-padding bg-white">
-      <div className="container-custom">
+    <section id='about' className='section-padding bg-white'>
+      <div className='container-custom'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className='mb-16 text-center'
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Vĩnh Long trong con số
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <h2 className='mb-4 text-4xl font-bold text-gray-900 md:text-5xl'>Vĩnh Long trong con số</h2>
+          <p className='mx-auto max-w-2xl text-xl text-gray-600'>
             Những thông tin cơ bản về vùng đất giữa hai dòng sông
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
           {statsData.map((stat, index) => {
-            const Icon =
-              (stat.icon && iconMap[stat.icon as keyof typeof iconMap]) ||
-              HelpCircle;
+            const Icon = (stat.icon && iconMap[stat.icon as keyof typeof iconMap]) || HelpCircle;
             return (
               <motion.div
                 key={index}
@@ -63,18 +51,14 @@ export default function Stats({ statsData }: StatsProps) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-br from-[#FFF8F0] to-white p-8 rounded-2xl shadow-lg text-center card-hover"
+                className='card-hover rounded-2xl bg-gradient-to-br from-[#FFF8F0] to-white p-8 text-center shadow-lg'
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#E07B39] to-[#4CAF50] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Icon size={32} className="text-white" />
+                <div className='mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#E07B39] to-[#4CAF50]'>
+                  <Icon size={32} className='text-white' />
                 </div>
-                <div className="text-5xl font-bold gradient-text mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-lg text-gray-600 mb-2">{stat.unit}</div>
-                <div className="text-xl font-semibold text-gray-900">
-                  {stat.label}
-                </div>
+                <div className='gradient-text mb-2 text-5xl font-bold'>{stat.value}</div>
+                <div className='mb-2 text-lg text-gray-600'>{stat.unit}</div>
+                <div className='text-xl font-semibold text-gray-900'>{stat.label}</div>
               </motion.div>
             );
           })}

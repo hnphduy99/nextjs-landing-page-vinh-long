@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-import Image from "next/image";
+import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 interface HeroProps {
   heroContent: {
     title: string;
@@ -15,34 +15,27 @@ interface HeroProps {
 
 export default function Hero({ heroContent }: HeroProps) {
   const scrollToContent = () => {
-    const aboutSection = document.getElementById("about");
-    aboutSection?.scrollIntoView({ behavior: "smooth" });
+    const aboutSection = document.getElementById('about');
+    aboutSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section id="home" className="relative h-screen w-full overflow-hidden">
+    <section id='home' className='relative h-screen w-full overflow-hidden'>
       {/* Background Image with Parallax Effect */}
       <motion.div
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
         transition={{ duration: 1.5 }}
-        className="absolute inset-0"
+        className='absolute inset-0'
       >
-        <Image
-          src={heroContent.imageUrl}
-          alt="Vĩnh Long"
-          fill
-          className="object-cover"
-          priority
-          quality={90}
-        />
+        <Image src={heroContent.imageUrl} alt='Vĩnh Long' fill className='object-cover' priority quality={90} />
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+        <div className='absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70' />
       </motion.div>
 
       {/* Content */}
-      <div className="relative h-full flex items-center justify-center">
-        <div className="container-custom text-center text-white">
+      <div className='relative flex h-full items-center justify-center'>
+        <div className='container-custom text-center text-white'>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,7 +43,7 @@ export default function Hero({ heroContent }: HeroProps) {
           >
             {/* Main Title */}
             <motion.h1
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
+              className='mb-6 text-5xl font-bold md:text-7xl lg:text-8xl'
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -60,7 +53,7 @@ export default function Hero({ heroContent }: HeroProps) {
 
             {/* Subtitle */}
             <motion.h2
-              className="text-2xl md:text-4xl lg:text-5xl font-semibold mb-8 text-[#E07B39]"
+              className='mb-8 text-2xl font-semibold text-[#E07B39] md:text-4xl lg:text-5xl'
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -70,7 +63,7 @@ export default function Hero({ heroContent }: HeroProps) {
 
             {/* Description */}
             <motion.p
-              className="text-lg md:text-xl lg:text-2xl max-w-4xl mx-auto mb-12 leading-relaxed text-white/90"
+              className='mx-auto mb-12 max-w-4xl text-lg leading-relaxed text-white/90 md:text-xl lg:text-2xl'
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
@@ -81,7 +74,7 @@ export default function Hero({ heroContent }: HeroProps) {
             {/* CTA Button */}
             <motion.button
               onClick={scrollToContent}
-              className="btn-primary text-lg"
+              className='btn-primary text-lg'
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 1 }}
@@ -96,18 +89,18 @@ export default function Hero({ heroContent }: HeroProps) {
 
       {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer"
+        className='absolute bottom-10 left-1/2 -translate-x-1/2 transform cursor-pointer'
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.8,
           delay: 1.2,
           repeat: Infinity,
-          repeatType: "reverse",
+          repeatType: 'reverse'
         }}
         onClick={scrollToContent}
       >
-        <ChevronDown size={40} className="text-white" />
+        <ChevronDown size={40} className='text-white' />
       </motion.div>
     </section>
   );
