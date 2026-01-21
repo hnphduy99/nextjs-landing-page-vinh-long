@@ -1,49 +1,36 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import {
-  Map,
-  MapPin,
-  Users,
-  Building,
-  TrendingUp,
-  Factory,
-  GraduationCap,
-  HeartPulse,
-} from "lucide-react";
-import { generalInfo } from "@/constants/about-data";
+import { generalInfo } from '@/constants/about-data';
+import { motion } from 'framer-motion';
+import { Building, Factory, GraduationCap, HeartPulse, Map, MapPin, TrendingUp, Users } from 'lucide-react';
 
 const iconMap = {
   map: Map,
-  "map-pin": MapPin,
+  'map-pin': MapPin,
   users: Users,
   building: Building,
-  "trending-up": TrendingUp,
+  'trending-up': TrendingUp,
   factory: Factory,
-  "graduation-cap": GraduationCap,
-  "heart-pulse": HeartPulse,
+  'graduation-cap': GraduationCap,
+  'heart-pulse': HeartPulse
 };
 
 export default function GeneralInfo() {
   return (
-    <section className="section-padding bg-white">
-      <div className="container-custom">
+    <section className='section-padding bg-white'>
+      <div className='container-custom'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className='mb-16 text-center'
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Thông Tin Tổng Quan
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Những con số "biết nói" về Vĩnh Long
-          </p>
+          <h2 className='mb-4 text-4xl font-bold text-gray-900 md:text-5xl'>Thông Tin Tổng Quan</h2>
+          <p className='mx-auto max-w-2xl text-xl text-gray-600'>Những con số &quot;biết nói&quot; về Vĩnh Long</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4'>
           {generalInfo.map((info, index) => {
             const Icon = iconMap[info.icon as keyof typeof iconMap];
             return (
@@ -53,44 +40,36 @@ export default function GeneralInfo() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group relative"
+                className='group relative'
               >
                 {/* Card */}
-                <div className="relative bg-white rounded-2xl p-8 shadow-lg card-hover overflow-hidden h-full">
+                <div className='card-hover relative h-full overflow-hidden rounded-2xl bg-white p-8 shadow-lg'>
                   {/* Gradient Background */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                    className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10`}
                   />
 
                   {/* Icon */}
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`w-16 h-16 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg`}
+                    className={`h-16 w-16 bg-gradient-to-br ${info.color} mb-6 flex items-center justify-center rounded-2xl shadow-lg`}
                   >
-                    <Icon size={32} className="text-white" />
+                    <Icon size={32} className='text-white' />
                   </motion.div>
 
                   {/* Content */}
-                  <h3 className="text-lg font-semibold text-gray-700 mb-3">
-                    {info.title}
-                  </h3>
+                  <h3 className='mb-3 text-lg font-semibold text-gray-700'>{info.title}</h3>
 
-                  <div className="mb-4">
-                    <span className="text-5xl font-bold gradient-text">
-                      {info.value}
-                    </span>
-                    <span className="text-xl text-gray-600 ml-2">
-                      {info.unit}
-                    </span>
+                  <div className='mb-4'>
+                    <span className='gradient-text text-5xl font-bold'>{info.value}</span>
+                    <span className='ml-2 text-xl text-gray-600'>{info.unit}</span>
                   </div>
 
-                  <p className="text-gray-600 leading-relaxed">
-                    {info.description}
-                  </p>
+                  <p className='leading-relaxed text-gray-600'>{info.description}</p>
 
                   {/* Decorative Corner */}
                   <div
-                    className={`absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br ${info.color} rounded-full opacity-10 group-hover:opacity-20 transition-opacity`}
+                    className={`absolute -right-4 -bottom-4 h-24 w-24 bg-gradient-to-br ${info.color} rounded-full opacity-10 transition-opacity group-hover:opacity-20`}
                   />
                 </div>
               </motion.div>

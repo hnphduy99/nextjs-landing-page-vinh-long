@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { CldUploadWidget } from "next-cloudinary";
-import { Image as ImageIcon, X } from "lucide-react";
-import Image from "next/image";
+import { CldUploadWidget } from 'next-cloudinary';
+import { Image as ImageIcon, X } from 'lucide-react';
+import Image from 'next/image';
 
 interface ImageUploadProps {
   value: string;
@@ -10,31 +10,24 @@ interface ImageUploadProps {
   onRemove: () => void;
 }
 
-export default function ImageUpload({
-  value,
-  onChange,
-  onRemove,
-}: ImageUploadProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function ImageUpload({ value, onChange, onRemove }: ImageUploadProps) {
   const onUpload = (result: any) => {
-    if (result.event === "success") {
+    if (result.event === 'success') {
       onChange(result.info.secure_url);
     }
   };
 
   return (
-    <div className="space-y-4 w-full">
-      <label className="block text-sm font-bold text-slate-700 mb-2">
-        Hình ảnh hiển thị
-      </label>
+    <div className='w-full space-y-4'>
+      <label className='mb-2 block text-sm font-bold text-slate-700'>Hình ảnh hiển thị</label>
 
       {value ? (
-        <div className="relative w-full aspect-video rounded-4xl overflow-hidden border-2 border-slate-100 group">
-          <Image fill src={value} alt="Upload" className="object-cover" />
+        <div className='group relative aspect-video w-full overflow-hidden rounded-4xl border-2 border-slate-100'>
+          <Image fill src={value} alt='Upload' className='object-cover' />
           <button
-            type="button"
+            type='button'
             onClick={onRemove}
-            className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur-sm rounded-xl text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg"
+            className='absolute top-4 right-4 rounded-xl bg-white/90 p-2 text-red-500 shadow-lg backdrop-blur-sm transition-all hover:bg-red-500 hover:text-white'
           >
             <X size={20} />
           </button>
@@ -47,35 +40,35 @@ export default function ImageUpload({
             maxFiles: 1,
             styles: {
               palette: {
-                window: "#FFFFFF",
-                windowBorder: "#E2E8F0",
-                tabIcon: "#E07B39",
-                menuIcons: "#5A616A",
-                textDark: "#0F172A",
-                textLight: "#FFFFFF",
-                link: "#E07B39",
-                action: "#E07B39",
-                inactiveTabIcon: "#94A3B8",
-                error: "#F43F5E",
-                inProgress: "#E07B39",
-                complete: "#10B981",
-                sourceBg: "#F8FAFC",
-              },
-            },
+                window: '#FFFFFF',
+                windowBorder: '#E2E8F0',
+                tabIcon: '#E07B39',
+                menuIcons: '#5A616A',
+                textDark: '#0F172A',
+                textLight: '#FFFFFF',
+                link: '#E07B39',
+                action: '#E07B39',
+                inactiveTabIcon: '#94A3B8',
+                error: '#F43F5E',
+                inProgress: '#E07B39',
+                complete: '#10B981',
+                sourceBg: '#F8FAFC'
+              }
+            }
           }}
         >
           {({ open }) => (
             <button
-              type="button"
+              type='button'
               onClick={() => open()}
-              className="w-full aspect-video rounded-4xl border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center gap-4 text-slate-400 hover:bg-slate-100 hover:border-[#E07B39]/30 hover:text-[#E07B39] transition-all group"
+              className='group flex aspect-video w-full flex-col items-center justify-center gap-4 rounded-4xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-400 transition-all hover:border-[#E07B39]/30 hover:bg-slate-100 hover:text-[#E07B39]'
             >
-              <div className="p-4 bg-white rounded-2xl shadow-sm group-hover:scale-110 transition-transform">
+              <div className='rounded-2xl bg-white p-4 shadow-sm transition-transform group-hover:scale-110'>
                 <ImageIcon size={32} />
               </div>
-              <div className="text-center">
-                <p className="font-bold text-slate-600">Nhấn để tải ảnh lên</p>
-                <p className="text-xs">Dung lượng tối đa 10MB</p>
+              <div className='text-center'>
+                <p className='font-bold text-slate-600'>Nhấn để tải ảnh lên</p>
+                <p className='text-xs'>Dung lượng tối đa 10MB</p>
               </div>
             </button>
           )}

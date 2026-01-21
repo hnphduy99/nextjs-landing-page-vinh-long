@@ -31,7 +31,7 @@ export interface Specialty {
   id: string;
   province_id: string;
   name: string;
-  category: "fruit" | "dish";
+  category: 'fruit' | 'dish';
   description: string;
   image_url: string;
   origin: string;

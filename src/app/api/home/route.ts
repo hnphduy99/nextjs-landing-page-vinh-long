@@ -1,29 +1,21 @@
-import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const [
-      settings,
-      stats,
-      milestones,
-      personalities,
-      culturalFeatures,
-      festivals,
-      provinces,
-    ] = await Promise.all([
+    const [settings, stats, milestones, personalities, culturalFeatures, festivals, provinces] = await Promise.all([
       prisma.siteSetting.findMany(),
-      prisma.stat.findMany({ orderBy: { order: "asc" } }),
-      prisma.historicalMilestone.findMany({ orderBy: { order: "asc" } }),
-      prisma.notablePersonality.findMany({ orderBy: { order: "asc" } }),
-      prisma.culturalFeature.findMany({ orderBy: { order: "asc" } }),
-      prisma.festival.findMany({ orderBy: { order: "asc" } }),
+      prisma.stat.findMany({ orderBy: { order: 'asc' } }),
+      prisma.historicalMilestone.findMany({ orderBy: { order: 'asc' } }),
+      prisma.notablePersonality.findMany({ orderBy: { order: 'asc' } }),
+      prisma.culturalFeature.findMany({ orderBy: { order: 'asc' } }),
+      prisma.festival.findMany({ orderBy: { order: 'asc' } }),
       prisma.province.findMany({
         include: {
-          destinations: { orderBy: { order: "asc" } },
-          specialties: { orderBy: { order: "asc" } },
-        },
-      }),
+          destinations: { orderBy: { order: 'asc' } },
+          specialties: { orderBy: { order: 'asc' } }
+        }
+      })
     ]);
 
     // Chuyển đổi SiteSettings từ mảng sang object key-value cho dễ dùng
@@ -45,13 +37,10 @@ export async function GET() {
       personalities,
       culturalFeatures,
       festivals,
-      provinces,
+      provinces
     });
   } catch (error) {
-    console.error("Error fetching homepage data:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    console.error('Error fetching homepage data:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

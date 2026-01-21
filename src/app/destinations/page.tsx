@@ -1,29 +1,26 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { CheckCircle, Info, Lightbulb, MapPin, Camera } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import MapSection from "@/components/destinations/MapSection";
-import {
-  detailedDestinations,
-  destinationsHero,
-} from "@/constants/destinations-data";
+import MapSection from '@/components/destinations/MapSection';
+import Footer from '@/components/layout/Footer';
+import Navbar from '@/components/layout/Navbar';
+import { destinationsHero, detailedDestinations } from '@/constants/destinations-data';
+import { motion } from 'framer-motion';
+import { Camera, CheckCircle, Lightbulb } from 'lucide-react';
+import Image from 'next/image';
 
 export default function DestinationsPage() {
   return (
-    <div className="min-h-screen bg-[#FFF8F0]">
+    <div className='min-h-screen bg-[#FFF8F0]'>
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-[#E07B39]/10 via-[#4CAF50]/10 to-[#FFF8F0]">
-        <div className="container-custom relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+      <section className='relative overflow-hidden bg-linear-to-br from-[#E07B39]/10 via-[#4CAF50]/10 to-[#FFF8F0] pt-32 pb-20'>
+        <div className='container-custom relative z-10'>
+          <div className='mx-auto max-w-4xl text-center'>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-6xl font-bold text-gray-900 mb-6"
+              className='mb-6 text-4xl font-bold text-gray-900 md:text-6xl'
             >
               {destinationsHero.title}
             </motion.h1>
@@ -31,7 +28,7 @@ export default function DestinationsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-[#E07B39] font-medium mb-6"
+              className='mb-6 text-xl font-medium text-[#E07B39]'
             >
               {destinationsHero.subtitle}
             </motion.p>
@@ -39,7 +36,7 @@ export default function DestinationsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-gray-600 leading-relaxed"
+              className='text-lg leading-relaxed text-gray-600'
             >
               {destinationsHero.description}
             </motion.p>
@@ -47,115 +44,90 @@ export default function DestinationsPage() {
         </div>
 
         {/* Background blobs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#E07B39]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#4CAF50]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        <div className='absolute top-0 right-0 h-96 w-96 translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E07B39]/5 blur-3xl' />
+        <div className='absolute bottom-0 left-0 h-96 w-96 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#4CAF50]/5 blur-3xl' />
       </section>
 
       {/* Destinations List */}
-      <section className="py-20">
-        <div className="container-custom">
-          <div className="flex flex-col gap-32">
+      <section className='py-20'>
+        <div className='container-custom'>
+          <div className='flex flex-col gap-32'>
             {detailedDestinations.map((destination, index) => (
               <motion.div
                 key={destination.id}
                 initial={{ opacity: 0, y: 100 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
-                className={`grid lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 !== 0 ? "lg:flex-row-reverse" : ""
-                }`}
+                className={`grid items-center gap-12 lg:grid-cols-2 ${index % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}
               >
                 {/* Visual Side */}
-                <div
-                  className={`space-y-6 ${index % 2 !== 0 ? "lg:order-2" : ""}`}
-                >
-                  <div className="relative h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl group">
+                <div className={`space-y-6 ${index % 2 !== 0 ? 'lg:order-2' : ''}`}>
+                  <div className='group relative h-[400px] overflow-hidden rounded-3xl shadow-2xl md:h-[500px]'>
                     <Image
                       src={destination.image}
                       alt={destination.name}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-1000"
+                      className='object-cover transition-transform duration-1000 group-hover:scale-110'
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <div className="absolute bottom-6 left-6 text-white">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Camera size={20} className="text-[#E07B39]" />
-                        <span className="text-xs font-bold uppercase tracking-widest">
-                          Tuyệt phẩm quang cảnh
-                        </span>
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
+                    <div className='absolute bottom-6 left-6 text-white'>
+                      <div className='mb-2 flex items-center gap-2'>
+                        <Camera size={20} className='text-[#E07B39]' />
+                        <span className='text-xs font-bold tracking-widest uppercase'>Tuyệt phẩm quang cảnh</span>
                       </div>
-                      <h3 className="text-3xl font-bold">{destination.name}</h3>
+                      <h3 className='text-3xl font-bold'>{destination.name}</h3>
                     </div>
                   </div>
 
                   {/* Small Gallery / Thumbnail Grid */}
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className='grid grid-cols-3 gap-4'>
                     {destination.gallery.slice(1).map((img, idx) => (
-                      <div
-                        key={idx}
-                        className="relative h-24 rounded-2xl overflow-hidden shadow-md"
-                      >
-                        <Image
-                          src={img}
-                          alt={`${destination.name} gallery ${idx}`}
-                          fill
-                          className="object-cover"
-                        />
+                      <div key={idx} className='relative h-24 overflow-hidden rounded-2xl shadow-md'>
+                        <Image src={img} alt={`${destination.name} gallery ${idx}`} fill className='object-cover' />
                       </div>
                     ))}
-                    <div className="relative h-24 rounded-2xl bg-white flex items-center justify-center border border-dashed border-[#E07B39] text-[#E07B39] font-bold text-xs cursor-pointer hover:bg-[#E07B39]/5 transition-colors">
+                    <div className='relative flex h-24 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[#E07B39] bg-white text-xs font-bold text-[#E07B39] transition-colors hover:bg-[#E07B39]/5'>
                       + 10 Ảnh
                     </div>
                   </div>
                 </div>
 
                 {/* Content Side */}
-                <div
-                  className={`space-y-8 ${index % 2 !== 0 ? "lg:order-1" : ""}`}
-                >
+                <div className={`space-y-8 ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
                   <div>
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#E07B39]/10 text-[#E07B39] font-bold text-sm mb-4">
+                    <span className='mb-4 inline-block rounded-full bg-[#E07B39]/10 px-4 py-1.5 text-sm font-bold text-[#E07B39]'>
                       Khám phá Vĩnh Long
                     </span>
-                    <h3 className="text-4xl font-bold text-gray-900 mb-4">
-                      {destination.name}
-                    </h3>
-                    <p className="text-xl font-medium text-[#4CAF50] italic mb-6">
-                      "{destination.slogan}"
-                    </p>
-                    <p className="text-gray-600 leading-relaxed text-lg">
-                      {destination.longDescription}
-                    </p>
+                    <h3 className='mb-4 text-4xl font-bold text-gray-900'>{destination.name}</h3>
+                    <p className='mb-6 text-xl font-medium text-[#4CAF50] italic'>&quot;{destination.slogan}&quot;</p>
+                    <p className='text-lg leading-relaxed text-gray-600'>{destination.longDescription}</p>
                   </div>
 
                   {/* Experiences List */}
-                  <div className="space-y-4">
-                    <h4 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                      <CheckCircle size={20} className="text-[#4CAF50]" /> Trải
-                      nghiệm không thể bỏ qua
+                  <div className='space-y-4'>
+                    <h4 className='flex items-center gap-2 text-lg font-bold text-gray-900'>
+                      <CheckCircle size={20} className='text-[#4CAF50]' /> Trải nghiệm không thể bỏ qua
                     </h4>
-                    <ul className="grid sm:grid-cols-2 gap-3">
+                    <ul className='grid gap-3 sm:grid-cols-2'>
                       {destination.experiences.map((exp, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-3 text-gray-600 bg-white p-3 rounded-xl shadow-sm border border-gray-50"
+                          className='flex items-start gap-3 rounded-xl border border-gray-50 bg-white p-3 text-gray-600 shadow-sm'
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#E07B39] mt-2 flex-shrink-0" />
-                          <span className="text-sm">{exp}</span>
+                          <span className='mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#E07B39]' />
+                          <span className='text-sm'>{exp}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   {/* Tips Box */}
-                  <div className="p-6 bg-gradient-to-r from-[#FFF8F0] to-white border-l-4 border-[#E07B39] rounded-2xl shadow-sm">
-                    <div className="flex items-center gap-3 text-[#E07B39] mb-2 font-bold">
+                  <div className='rounded-2xl border-l-4 border-[#E07B39] bg-gradient-to-r from-[#FFF8F0] to-white p-6 shadow-sm'>
+                    <div className='mb-2 flex items-center gap-3 font-bold text-[#E07B39]'>
                       <Lightbulb size={20} /> Mẹo cho chuyến đi
                     </div>
-                    <p className="text-gray-700 italic text-sm">
-                      {destination.tips}
-                    </p>
+                    <p className='text-sm text-gray-700 italic'>{destination.tips}</p>
                   </div>
                 </div>
               </motion.div>
@@ -168,21 +140,21 @@ export default function DestinationsPage() {
       <MapSection />
 
       {/* Call to Action */}
-      <section className="section-padding">
-        <div className="container-custom">
-          <div className="bg-gradient-to-br from-[#E07B39] to-[#4CAF50] rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden shadow-2xl">
-            <div className="relative z-10">
-              <h2 className="text-3xl md:text-5xl font-bold mb-8">
+      <section className='section-padding'>
+        <div className='container-custom'>
+          <div className='relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#E07B39] to-[#4CAF50] p-12 text-center text-white shadow-2xl md:p-20'>
+            <div className='relative z-10'>
+              <h2 className='mb-8 text-3xl font-bold md:text-5xl'>
                 Bạn đã sẵn sàng bước vào hành trình?
                 <br />
                 Về Vĩnh Long - Về là thương.
               </h2>
-              <button className="px-10 py-4 bg-white text-[#E07B39] font-bold rounded-full text-lg hover:shadow-xl hover:scale-105 transition-all">
+              <button className='rounded-full bg-white px-10 py-4 text-lg font-bold text-[#E07B39] transition-all hover:scale-105 hover:shadow-xl'>
                 Lên kế hoạch ngay
               </button>
             </div>
             {/* Decorative background circle */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className='absolute top-0 right-0 h-[500px] w-[500px] translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10' />
           </div>
         </div>
       </section>
