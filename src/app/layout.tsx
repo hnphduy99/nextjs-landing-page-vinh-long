@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 
 const playfairDisplay = Playfair_Display({
@@ -72,6 +72,8 @@ export const viewport: Viewport = {
   maximumScale: 5
 };
 
+import { Providers } from './providers';
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -79,7 +81,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='vi' suppressHydrationWarning className='scroll-smooth'>
-      <body className={`${playfairDisplay.variable} ${inter.variable} antialiased`}>{children}</body>
+      <body className={`${playfairDisplay.variable} ${inter.variable} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

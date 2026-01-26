@@ -109,7 +109,6 @@ export default function AdminDashboard() {
           </motion.div>
         ))}
       </div>
-
       <div className='grid gap-8 lg:grid-cols-3'>
         <div className='rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm lg:col-span-2'>
           <h3 className='font-primary mb-6 text-xl font-bold text-slate-900'>Hoạt động gần đây</h3>
